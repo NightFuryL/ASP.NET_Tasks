@@ -8,8 +8,8 @@ public class ProductService : IProductService
 {
     private static readonly List<ProductDto> products = new List<ProductDto>
     {
-        new ProductDto{Id = Guid.Parse("alb2c3d4-e5f6-7890-abcd-ef1234567890"), Name = "Laptop", Price = 1000 },
-        new ProductDto{Id = Guid.Parse("b2c3d4e5-f6a7-8901-bcde-f12345678901"), Name = "Computer", Price = 1500}
+        new ProductDto { Id = Guid.Parse("a1b2c3d4-e5f6-7890-abcd-ef1234567890"), Name = "Laptop", Price = 1000 },
+        new ProductDto { Id = Guid.Parse("b2c3d4e5-f6a7-8901-bcde-012345678901"), Name = "Computer", Price = 1500 }
     };
     public ProductDto Create(CreateProductDto product)
     {

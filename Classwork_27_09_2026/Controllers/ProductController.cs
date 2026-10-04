@@ -28,7 +28,7 @@ public class ProductController : ControllerBase
     public IActionResult Create([FromBody] CreateProductDto dto)
     {
         var newProduct = _productService.Create(dto);
-        return CreatedAtAction(nameof(GetById), new { id = newProduct. Id }, newProduct);
+        return CreatedAtAction(nameof(GetById), new { id = newProduct.Id }, newProduct);
     }
     [HttpPut("{id:guid}")]
     public IActionResult Update(Guid id, [FromBody] UpdateProductDto dto)
