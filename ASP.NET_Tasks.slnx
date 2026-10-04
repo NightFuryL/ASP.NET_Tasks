@@ -1,6 +1,6 @@
 <Solution>
   <Folder Name="/Classworks/" />
-  <Folder Name="/Classworks/03.10.2026/">
+  <Folder Name="/Classworks/03_10_2026/">
     <Project Path="Classwork_03_10_2026/Classwork_03_10_2026.csproj" Id="45634e12-0cbc-4f41-88b8-96638f4cd256" />
   </Folder>
   <Folder Name="/Classworks/04_10_2026/">
@@ -17,5 +17,37 @@
   </Folder>
   <Folder Name="/Classworks/27_09_2026/">
     <Project Path="Classwork_27_09_2026/Classwork_27_09_2026.csproj" Id="3b72a038-f050-4620-8416-379f3ef2176b" />
+  </Folder>
+  <Folder Name="/Homeworks/" />
+  <Folder Name="/Homeworks/03_10_to_10_10_2026/">
+    <Project Path="HW_03_10_to_10_10_2026/HW_03_10_to_10_10_2026.csproj" Id="1a6ec69c-4fef-456d-bbf1-a7e799dc9d30" />
+  </Folder>
+  <Folder Name="/Homeworks/04_10_to_12_10_2026/">
+    <Project Path="HW_04_10_to_12_10_2026/HW_04_10_to_12_10_2026.csproj" Id="00fe44ab-c25d-4a5c-b75f-e3c3ae666fd0" />
+  </Folder>
+  <Folder Name="/Homeworks/19_09_to_26_09_2026/">
+    <Project Path="HW_19_09_to_26_09_2026/HW_19_09_to_26_09_2026.csproj" Id="36007a56-904e-44e3-9840-39282cb67c4e" />
+  </Folder>
+  <Folder Name="/Homeworks/20_09_to_27_09_2026/">
+    <Project Path="HW_20_09_to_27_09_2026/HW_20_09_to_27_09_2026.csproj" Id="e65ba9d3-bf78-489b-9694-5525986fda21" />
+  </Folder>
+  <Folder Name="/Homeworks/26_09_to_03_09_2026/">
+    <Project Path="HW_26_09_to_03_09_2026/HW_26_09_to_03_09_2026.csproj" Id="e1c20663-bd97-44a7-b59c-1fe517c6565d" />
+  </Folder>
+  <Folder Name="/Homeworks/27_09_to_04_09_2026/">
+    <Project Path="HW_27_09_to_04_09_2026/HW_27_09_to_04_09_2026.csproj" Id="a128c99f-6d8f-4ce5-8cf9-37066e82d591" />
+  </Folder>
+  <Folder Name="/Practice/" />
+  <Folder Name="/Practice/03_10_2026/">
+    <Project Path="Practice_03_10_2026/Practice_03_10_2026.csproj" Id="03f733a2-8edd-4cb5-8357-4295e41098e3" />
+  </Folder>
+  <Folder Name="/Practice/04_10_2026/">
+    <Project Path="Practice_04_10_2026/Practice_04_10_2026.csproj" Id="c3aa88dc-4bf3-4b76-86f3-50debbc755f1" />
+  </Folder>
+  <Folder Name="/Practice/19_09_2026/">
+    <Project Path="Practice_19_09_2026/Practice_19_09_2026.csproj" Id="b0918788-9035-4454-b994-4889ab6186d9" />
+  </Folder>
+  <Folder Name="/Practice/26_09_2026/">
+    <Project Path="Practice_26_09_2026/Practice_26_09_2026.csproj" Id="933eebef-ad68-4bf7-b154-c285c784387a" />
   </Folder>
 </Solution>
