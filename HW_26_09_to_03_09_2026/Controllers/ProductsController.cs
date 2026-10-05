@@ -10,7 +10,7 @@ public class ProductsController : ControllerBase
 {
     private static readonly List<Product> _products = new()
     {
-        new Product { Id = 1, Name = "Laptop Dell XPS 15", Price = 1899.99m },
+        new Product { Id = 1, Name = "Laptop Dell", Price = 1899.99m },
         new Product { Id = 2, Name = "Wireless Mouse Logitech", Price = 49.99m },
         new Product { Id = 3, Name = "Mechanical Keyboard Keychron", Price = 99.50m }
     };
