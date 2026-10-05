@@ -16,7 +16,7 @@ public class ProductController : ControllerBase
     {
         new Product { Id = 1, Name = "Ноутбук ASUS ZenBook", Price = 38999.00m },
         new Product { Id = 2, Name = "Миша бездротова Logitech", Price = 1299.00m },
-        new Product { Id = 3, Name = "Монітор Dell UltraSharp 27", Price = 15499.00m }
+        new Product { Id = 3, Name = "Монітор Dell", Price = 15499.00m }
     };
 
     private static int _nextId = 4;

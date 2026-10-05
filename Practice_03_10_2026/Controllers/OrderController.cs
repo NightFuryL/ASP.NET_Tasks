@@ -17,7 +17,7 @@ public class OrderController : ControllerBase
         new Order
         {
             Id = 1,
-            OrderNumber = "ORD-2026-001",
+            OrderNumber = "ORD_2026_001",
             CreatedAt = DateTime.UtcNow.AddDays(-2),
             Items = new List<OrderItem>
             {
