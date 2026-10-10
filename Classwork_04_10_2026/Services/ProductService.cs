@@ -47,4 +47,14 @@ public class ProductService : IProductService
                 .ToList();
         return productDTOs;
     }
+
+    Product IProductService.Create(CreateProductDTO product)
+    {
+        throw new NotImplementedException();
+    }
+
+    List<ProductDTO> IProductService.GetProducts()
+    {
+        throw new NotImplementedException();
+    }
 }
