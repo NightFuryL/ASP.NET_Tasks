@@ -50,6 +50,9 @@
   <Folder Name="/Practice/04_10_2026/">
     <Project Path="Practice_04_10_2026/Practice_04_10_2026.csproj" Id="c3aa88dc-4bf3-4b76-86f3-50debbc755f1" />
   </Folder>
+  <Folder Name="/Practice/11_10_2026/">
+    <Project Path="Practice_11_10_2026/Practice_11_10_2026.csproj" Id="982b2bb2-fff3-4693-8cf4-f8c555fc8b95" />
+  </Folder>
   <Folder Name="/Practice/19_09_2026/">
     <Project Path="Practice_19_09_2026/Practice_19_09_2026.csproj" Id="b0918788-9035-4454-b994-4889ab6186d9" />
   </Folder>
