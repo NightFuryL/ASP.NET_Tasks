@@ -1,0 +1,34 @@
+@model Practice_19_09_2026.Models.DiscountViewModel
+
+@{
+    ViewData["Title"] = "Розрахунок знижки";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-4">Розрахунок підсумкової ціни зі знижкою</h2>
+
+        <form asp-action="Index" method="post" class="card p-4 shadow-sm">
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label">Ціна товару (грн):</label>
+                <input asp-for="Price" class="form-control" type="number" step="0.01" min="0" required />
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DiscountPercent" class="form-label">Відсоток знижки (%):</label>
+                <input asp-for="DiscountPercent" class="form-control" type="number" step="0.01" min="0" max="100" required />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Розрахувати</button>
+        </form>
+
+        @if (Model != null && !string.IsNullOrEmpty(Model.Message))
+        {
+            <div class="card mt-4 p-3 border-success shadow-sm">
+                <h4 class="text-success">Результат:</h4>
+                <p class="fs-5 mb-1"><strong>Підсумкова ціна:</strong> @Model.FinalPrice.ToString("F2") грн</p>
+                <p class="text-muted mb-0">@Model.Message</p>
+            </div>
+        }
+    </div>
+</div>
