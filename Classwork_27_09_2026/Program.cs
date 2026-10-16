@@ -1,6 +1,7 @@
-using Classwork_26_09_2026.Middleware;
+using Classwork_27_09_2026.Services;
+using Classwork_27_09_2026.Services.Abstract;
 
-namespace Classwork_26_09_2026;
+namespace Classwork_27_09_2026;
 public class Program
 {
     public static void Main(string[] args)
@@ -12,15 +13,11 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
-
+        builder.Services.AddScoped<IProductService, ProductService>();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-
-
         var app = builder.Build();
-
-        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
