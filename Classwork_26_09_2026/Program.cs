@@ -1,6 +1,6 @@
+using Classwork_26_09_2026.Middleware;
 
-namespace Classwork_20_09_2026;
-
+namespace Classwork_26_09_2026;
 public class Program
 {
     public static void Main(string[] args)
@@ -12,26 +12,26 @@ public class Program
         builder.Services.AddControllers();
         // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
         builder.Services.AddOpenApi();
-        // Замените AddScoped на AddSingleton
-        builder.Services.AddSingleton<Services.IProductService, Services.ProductService>();
 
-        //swagger
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
+
+
         var app = builder.Build();
 
-        app.UseMiddleware<Middleware.LoggingMiddleware>();
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
 
         // Configure the HTTP request pipeline.
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
-            app.UseSwaggerUI();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Order");
+            });
             app.MapOpenApi();
         }
-
-        
 
         app.UseHttpsRedirection();
 

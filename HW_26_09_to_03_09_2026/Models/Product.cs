@@ -1,7 +1,8 @@
-﻿namespace Classwork_20_09_2026.Models;
+namespace HW_26_09_to_03_09_2026.Models;
+
 public class Product
 {
-    public Guid Id { get; set; } = Guid.NewGuid();
+    public int Id { get; set; }
     public string Name { get; set; } = string.Empty;
     public decimal Price { get; set; }
 }
