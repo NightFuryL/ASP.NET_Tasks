@@ -1,0 +1,62 @@
+
+@model HW_19_09_to_26_09_2026.Models.InsuranceViewModel
+
+@{
+    ViewData["Title"] = "Калькулятор автоцивілки";
+}
+<!--В створенні цієї сторінки мені допомогла ШІ, та бо було трохи заплутанро) та було багато помилок(-->
+<div class="row justify-content-center">
+    <div class="col-md-7">
+        <h2 class="mb-4">Веб-калькулятор автоцивілки</h2>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div class="alert alert-danger" role="alert">
+                <strong>Помилка:</strong> @Model.ErrorMessage
+            </div>
+        }
+
+        <form asp-action="Index" method="post" class="card p-4 shadow-sm">
+            <div class="mb-3">
+                <label asp-for="EngineCapacity" class="form-label">Об'єм двигуна (см³):</label>
+                <input asp-for="EngineCapacity" class="form-control" type="number" min="1" step="1" required />
+                <div class="form-text">До 1600 см³ (коеф. 1.0), 1601-2000 см³ (коеф. 1.3), понад 2000 см³ (коеф. 1.6)</div>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="CityType" class="form-label">Місто реєстрації:</label>
+                <select asp-for="CityType" class="form-select">
+                    <option value="Kyiv">Київ (коеф. 1.8)</option>
+                    <option value="LargeCity">Велике місто (коеф. 1.3)</option>
+                    <option value="SmallTown">Інше / Мале місто (коеф. 1.0)</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DriverExperienceYears" class="form-label">Стаж водіння (років):</label>
+                <input asp-for="DriverExperienceYears" class="form-control" type="number" min="0" step="1" required />
+                <div class="form-text">Стаж понад 3 роки надає знижку 10%</div>
+            </div>
+
+            <div class="mb-4 form-check">
+                <input asp-for="HasDiscountCategory" class="form-check-input" type="checkbox" id="discountCheck" />
+                <label class="form-check-label" for="discountCheck">
+                    Наявність пільг (пенсіонер / інвалід) — знижка 20%
+                </label>
+            </div>
+
+            <button type="submit" class="btn btn-success w-100 py-2">Розрахувати вартість</button>
+        </form>
+
+        @if (string.IsNullOrEmpty(Model.ErrorMessage) && Model.CalculatedPrice > 0)
+        {
+            <div class="card mt-4 p-4 border-success shadow-sm bg-light">
+                <h4 class="text-success mb-2">Розрахунок завершено!</h4>
+                <p class="fs-4 mb-0">
+                    <strong>Підсумкова вартість автоцивілки:</strong>
+                    <span class="badge bg-success fs-5">@Model.CalculatedPrice.ToString("F2") грн</span>
+                </p>
+            </div>
+        }
+    </div>
+</div>
