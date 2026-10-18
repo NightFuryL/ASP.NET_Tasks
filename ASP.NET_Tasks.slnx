@@ -10,5 +10,6 @@
   </Folder>
   <Folder Name="/26-09-2026/">
     <Project Path="26-09-2026/Classwork_26_09_2026/Classwork_26_09_2026.csproj" />
+    <Project Path="26-09-2026/Practice_26_09_2026/Practice_26_09_2026.csproj" />
   </Folder>
 </Solution>
