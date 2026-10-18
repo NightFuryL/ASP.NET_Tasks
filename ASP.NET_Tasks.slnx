@@ -4,4 +4,7 @@
     <Project Path="19-09-2026/HW_19_09_to_26_09_2026/HW_19_09_to_26_09_2026.csproj" />
     <Project Path="19-09-2026/Practice_19_09_2026/Practice_19_09_2026.csproj" />
   </Folder>
+  <Folder Name="/20-09-2026/">
+    <Project Path="20-09-2026/Classwork_20_09_2026/Classwork_20_09_2026.csproj" />
+  </Folder>
 </Solution>
