@@ -8,4 +8,9 @@
     <Project Path="20-09-2026/Classwork_20_09_2026/Classwork_20_09_2026.csproj" />
     <Project Path="20-09-2026/HW_20_09_to_27_09_2026/HW_20_09_to_27_09_2026.csproj" />
   </Folder>
+  <Folder Name="/26-09-2026/">
+    <Project Path="26-09-2026/Classwork_26_09_2026/Classwork_26_09_2026.csproj" />
+    <Project Path="26-09-2026/HW_26_09_to_03_09_2026/HW_26_09_to_03_09_2026.csproj" />
+    <Project Path="26-09-2026/Practice_26_09_2026/Practice_26_09_2026.csproj" />
+  </Folder>
 </Solution>
