@@ -1,0 +1,27 @@
+@Classwork_25_10_2026_HostAddress = http://localhost:5107
+
+### 1. Перевірка авто-валідації через ValidationFilterAttribute (помилки в полях) -> очікується 400 Bad Request
+POST {{Classwork_25_10_2026_HostAddress}}/api/product
+Content-Type: application/json
+
+{
+  "name": "",
+  "price": -15,
+  "description": "Опис",
+  "quantity": -2
+}
+
+### 2. Створення товару з коректними даними (логується тривалість виконання через RequestLoggingMiddleware) -> 201 Created
+POST {{Classwork_25_10_2026_HostAddress}}/api/product
+Content-Type: application/json
+
+{
+  "name": "Ноутбук Apple MacBook Air M3",
+  "price": 57999.00,
+  "description": "Легкий та продуктивний ультрабук",
+  "quantity": 12
+}
+
+### 3. Отримати список товарів з пагінацією
+GET {{Classwork_25_10_2026_HostAddress}}/api/product?pageNumber=1&pageSize=10
+Accept: application/json
