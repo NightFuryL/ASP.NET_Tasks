@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Http;
 using AspNetAssignments.DTOs.Pagination;
 using AspNetAssignments.DTOs.Product;
 
@@ -32,6 +33,11 @@ public interface IProductService
     /// Оновлює дані наявного товару
     /// </summary>
     Task<ProductDTO?> UpdateProductAsync(Guid id, UpdateProductDTO dto);
+
+    /// <summary>
+    /// Додає декілька фотографій до існуючого товару
+    /// </summary>
+    Task<ProductDTO?> AddImagesAsync(Guid id, List<IFormFile> files);
 
     /// <summary>
     /// Виконує м'яке видалення товару за ідентифікатором

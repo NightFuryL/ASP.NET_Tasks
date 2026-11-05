@@ -19,11 +19,13 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         // Мапінг для сутності Product
-        CreateMap<Product, ProductDTO>();
+        CreateMap<Product, ProductDTO>()
+            .ForMember(dest => dest.Images, opt => opt.MapFrom(src => src.Images.Select(i => i.ImageUrl).ToList()));
         CreateMap<CreateProductDTO, Product>()
             .ForMember(dest => dest.Id, opt => opt.MapFrom(src => Guid.NewGuid()))
             .ForMember(dest => dest.CreatedDate, opt => opt.MapFrom(src => DateTime.UtcNow))
-            .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false));
+            .ForMember(dest => dest.IsDeleted, opt => opt.MapFrom(src => false))
+            .ForMember(dest => dest.Images, opt => opt.Ignore());
         CreateMap<UpdateProductDTO, Product>();
 
         // Мапінг для сутності User
