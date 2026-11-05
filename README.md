@@ -1,13 +1,9 @@
 # ASP.NET Core Tasks
 ---
-## 🗺️ Зміст
-* [📌 Структура рішень](#-структура-рішень)
-  * [1. AspNetAssignments (Головний проєкт)](#1-aspnetassignments-головний-проєкт)
-  * [2. ExtraAspNetAssignments (Додатковий проєкт)](#2-extraaspnetassignments-додатковий-проєкт)
+## 🗺️ Зміст (головний проєкт - AspNetAssignments)
+* [📌 Структура проєкту](#-структура-проєкту)
 * [🗂️ Простори імен (Namespaces)](#-простори-імен-namespaces)
-  * [1. AspNetAssignments (Головний проєкт)](#1-aspnetassignments-головний-проєкт-1)
-  * [2. ExtraAspNetAssignments (Додатковий проєкт)](#2-extraaspnetassignments-додатковий-проєкт-1)
-* [🌿 Робота з Git та гілками](#-робота-з-git-та-гілками-як-виконуєтсья-кожна-робота)
+* [🌿 Робота з Git та гілками](#-робота-з-git-та-гілками-як-виконується-кожна-робота)
 * [🚀 Остання влита робота](#-остання-влита-робота)
 
 ---
@@ -18,28 +14,25 @@
 
 ---
 
-## 📌 Структура рішень
-
-### 1. `AspNetAssignments` (Головний проєкт)
-Сюди винесено весь функціонал сутностей, з якими велася систематична робота протягом курсу (багато використовували):
+## 📌 Структура проєкту
+### Сюди винесено весь функціонал сутностей, з якими велася систематична робота протягом курсу:
 
 * **Product (Товар) & FluentValidation + Global Validation Filter**:
 * **User (Користувач / Клієнт)**:
 * **Order & OrderItem (Замовлення та позиції)**:
-
-### 2. `ExtraAspNetAssignments` (Додатковий проєкт)
-Сюди винесено тематичні сутності окремих практичних та домашніх завдань
 * **Book (Книги)**
 * **Invoice (Рахунки/Інвойси)**
 * **Project & TaskItem (Проєкти та задачі)**
 ---
 ## 🗂 Простори імен (Namespaces)
-Замість `<сутність>` требя замінити, на ту сутність, з якою треба працювати, але загальна назва, наприклад: `Product`
-### 1. `AspNetAssignments` (Головний проєкт):
+### Замість `<сутність>` требя замінити, на ту сутність, з якою треба працювати, але загальна назва, наприклад: `Product`:
 ***Наразі існують такі сутності в цьому проєкті:***
 * **Product -> `Product`**
 * **Order & OrderTime -> `Order`**
 * **User -> `User`**
+* **Book -> `Book`**
+* **Invoice -> `Invoice`**
+* **Project & TaskItem -> `Project`**
 
 Самі простори імен:
 
@@ -57,24 +50,6 @@
 * **Mapping** — `using AspNetAssignments.Mapping;` 
 * **Exceptions** — `using AspNetAssignments.Exceptions;` 
 * **Root / Program** — `using AspNetAssignments;` 
-
-### 2. `ExtraAspNetAssignments` (Додатковий проєкт):
-***Наразі існують такі сутності в цьому проєкті:***
-* **Book -> `Book`**
-* **Invoice -> `Invoice`**
-* **Project & TaskItem -> `Project`**
-
-Самі простори імен:
-
-* **Data** — `using ExtraAspNetAssignments.Data;`
-* **Models** — `using ExtraAspNetAssignments.Models.<сутність>;`
-* **DTOs** — `using ExtraAspNetAssignments.DTOs.<сутність>;`
-* **DTOs** — `using ExtraAspNetAssignments.DTOs.<сутність>;`
-* **Services (Abstract)** — `using ExtraAspNetAssignments.Services.Abstract;`
-* **Services** — `using ExtraAspNetAssignments.Services;`
-* **Controllers** — `using ExtraAspNetAssignments.Controllers;`
-* **Mapping** — `using ExtraAspNetAssignments.Mapping;`
-* **Root / Program** — `using ExtraAspNetAssignments;` 
 
 ---
 
@@ -94,10 +69,11 @@
 ---
 
 ## 🚀 Остання влита робота:
-
-Остання актуальна робота, що була перевірена та влита в `main` (або не влита, та знаходиться в гілці hw-24-10-2026):
-## Було трохи складно із фото  юзера, цей момент зробив із за допомогою ші нажаль 
+### ДЗ 25.10.2026
+Остання актуальна робота, що була перевірена та влита в `main` (або не влита, та знаходиться в гілці hw-25-10-2026):
+## Мабуть трохи інший синтаксис для потокобезпечності, ніж у попередньому завданні, але все ж таки працює
 ### Підтвердження виконання (Скріншоти та результати тестування) для практичної або домашньої роботи:
 
 ![Немає](Images/1.png)
 ![Немає](Images/2.png)
+![Немає](Images/3.png)

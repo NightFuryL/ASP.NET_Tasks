@@ -1,11 +1,11 @@
-using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using AspNetAssignments.Data;
 using AspNetAssignments.Filters;
 using AspNetAssignments.Mapping;
 using AspNetAssignments.Middleware;
 using AspNetAssignments.Services;
 using AspNetAssignments.Services.Abstract;
+using FluentValidation;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetAssignments;
 
@@ -28,7 +28,12 @@ public class Program
         builder.Services.AddControllers(options =>
         {
             options.Filters.Add<ValidationFilterAttribute>();
+
+            // Строка нижче потрібна для обмеження доступу до контролерів лише з дозволеного списку
+            // Якщо список дозволених контролерів порожній, то доступ до всіх контролерів буде дозволений
+            options.Conventions.Add(new OnlyAllowedControllersConvention("Product", "User"));
         });
+
 
         // Підключення до бази даних SQL Server через EF Core
         builder.Services.AddDbContext<AppDbContext>(options =>
@@ -51,6 +56,12 @@ public class Program
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IFileService, FileService>();
         builder.Services.AddScoped<IOrderService, OrderService>();
+        builder.Services.AddSingleton<IFileLoggerService, FileLoggerService>();
+        #region Додаткові сервіси
+        // Реєстрація бізнес-сервісів у DI
+        builder.Services.AddScoped<IProjectService, ProjectService>();
+        builder.Services.AddScoped<ITaskItemService, TaskItemService>();
+        #endregion
 
         // Налаштування Swagger документації API
         builder.Services.AddEndpointsApiExplorer();

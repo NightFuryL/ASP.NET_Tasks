@@ -1,10 +1,18 @@
-using AutoMapper;
-using AspNetAssignments.Models.Product;
-using AspNetAssignments.Models.User;
-using AspNetAssignments.Models.Order;
+using AspNetAssignments.DTOs.Order;
 using AspNetAssignments.DTOs.Product;
 using AspNetAssignments.DTOs.User;
-using AspNetAssignments.DTOs.Order;
+using AspNetAssignments.Models.Order;
+using AspNetAssignments.Models.Product;
+using AspNetAssignments.Models.User;
+using AutoMapper;
+#region Додаткові сутності
+using AspNetAssignments.DTOs.Book;
+using AspNetAssignments.DTOs.Invoice;
+using AspNetAssignments.DTOs.Project;
+using AspNetAssignments.Models.Book;
+using AspNetAssignments.Models.Invoice;
+using AspNetAssignments.Models.Project;
+#endregion
 
 namespace AspNetAssignments.Mapping;
 
@@ -49,5 +57,26 @@ public class MappingProfile : Profile
             .ForMember(dest => dest.Total, opt => opt.MapFrom(src => src.Total));
         CreateMap<CreateOrderItemDTO, OrderItem>();
         CreateMap<UpdateOrderItemDTO, OrderItem>();
+
+        #region Додаткові сутності
+        // Мапінг для Project та TaskItem
+        CreateMap<Project, ProjectDto>().ReverseMap();
+        CreateMap<CreateProjectDto, Project>();
+        CreateMap<UpdateProjectDto, Project>();
+
+        CreateMap<TaskItem, TaskItemDto>().ReverseMap();
+        CreateMap<CreateTaskItemDto, TaskItem>();
+        CreateMap<UpdateTaskItemDto, TaskItem>();
+
+        // Мапінг для Invoice
+        CreateMap<Invoice, InvoiceReadDto>();
+        CreateMap<InvoiceCreateDto, Invoice>();
+        CreateMap<InvoiceUpdateDto, Invoice>();
+
+        // Мапінг для Book
+        CreateMap<Book, BookDto>().ReverseMap();
+        CreateMap<CreateBookDto, Book>();
+        CreateMap<UpdateBookDto, Book>();
+        #endregion
     }
 }
