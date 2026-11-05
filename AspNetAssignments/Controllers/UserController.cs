@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using FluentValidation;
 using AspNetAssignments.DTOs.User;
 using AspNetAssignments.Services.Abstract;
 
@@ -47,13 +48,15 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
-    /// Створити нового користувача (підтримує передачу форми з аватаром)
+    /// Створити нового користувача (підтримує передачу форми з аватаром та валідацію через FluentValidation)
     /// </summary>
     [HttpPost]
     [Consumes("multipart/form-data", "application/json")]
     [ProducesResponseType(typeof(UserDTO), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromForm] CreateUserDTO dto)
+    public async Task<IActionResult> Create(
+        [FromForm] CreateUserDTO dto,
+        [FromServices] IValidator<CreateUserDTO>? validator = null)
     {
         if (!ModelState.IsValid)
         {
@@ -65,14 +68,17 @@ public class UserController : ControllerBase
     }
 
     /// <summary>
-    /// Оновити дані користувача та аватар
+    /// Оновити дані користувача та аватар (підтримує валідацію через FluentValidation)
     /// </summary>
     [HttpPut("{id:guid}")]
     [Consumes("multipart/form-data", "application/json")]
     [ProducesResponseType(typeof(UserDTO), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Update(Guid id, [FromForm] UpdateUserDTO dto)
+    public async Task<IActionResult> Update(
+        Guid id,
+        [FromForm] UpdateUserDTO dto,
+        [FromServices] IValidator<UpdateUserDTO>? validator = null)
     {
         if (!ModelState.IsValid)
         {
