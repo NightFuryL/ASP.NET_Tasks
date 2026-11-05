@@ -51,6 +51,7 @@ public class Program
         builder.Services.AddScoped<IUserService, UserService>();
         builder.Services.AddScoped<IFileService, FileService>();
         builder.Services.AddScoped<IOrderService, OrderService>();
+        builder.Services.AddSingleton<IFileLoggerService, FileLoggerService>();
 
         // Налаштування Swagger документації API
         builder.Services.AddEndpointsApiExplorer();
