@@ -111,6 +111,27 @@ namespace AspNetAssignments.Migrations
                     b.ToTable("Products");
                 });
 
+            modelBuilder.Entity("AspNetAssignments.Models.Product.ProductImage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ImageUrl")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("ProductImages");
+                });
+
             modelBuilder.Entity("AspNetAssignments.Models.User.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -168,9 +189,25 @@ namespace AspNetAssignments.Migrations
                     b.Navigation("Order");
                 });
 
+            modelBuilder.Entity("AspNetAssignments.Models.Product.ProductImage", b =>
+                {
+                    b.HasOne("AspNetAssignments.Models.Product.Product", "Product")
+                        .WithMany("Images")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
+                });
+
             modelBuilder.Entity("AspNetAssignments.Models.Order.Order", b =>
                 {
                     b.Navigation("Items");
+                });
+
+            modelBuilder.Entity("AspNetAssignments.Models.Product.Product", b =>
+                {
+                    b.Navigation("Images");
                 });
 #pragma warning restore 612, 618
         }

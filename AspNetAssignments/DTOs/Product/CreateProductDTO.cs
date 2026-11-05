@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace AspNetAssignments.DTOs.Product;
 
@@ -17,4 +18,6 @@ public class CreateProductDTO
 
     [Range(0, 100000, ErrorMessage = "Кількість не може бути від'ємною.")]
     public int Quantity { get; set; }
+
+    public List<IFormFile>? Images { get; set; }
 }

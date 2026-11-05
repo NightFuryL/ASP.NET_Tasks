@@ -60,13 +60,14 @@ public class ProductController : ControllerBase
     }
 
     /// <summary>
-    /// Створює новий товар у системі (валідація здійснюється автоматично через ValidationFilterAttribute)
+    /// Створює новий товар у системі з можливістю передачі декількох фотографій (валідація здійснюється автоматично через ValidationFilterAttribute)
     /// </summary>
     [HttpPost]
+    [Consumes("multipart/form-data", "application/json")]
     [ProducesResponseType(typeof(ProductDTO), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateProduct(
-        [FromBody] CreateProductDTO product,
+        [FromForm] CreateProductDTO product,
         [FromServices] IValidator<CreateProductDTO>? validator = null)
     {
         // Ручна перевірка моделі закоментована, оскільки діє глобальний ValidationFilterAttribute:
@@ -82,6 +83,30 @@ public class ProductController : ControllerBase
 
         var createdProduct = await _productService.CreateProductAsync(product);
         return CreatedAtAction(nameof(GetProductById), new { id = createdProduct.Id }, createdProduct);
+    }
+
+    /// <summary>
+    /// Завантажує декілька фотографій для існуючого товару
+    /// </summary>
+    [HttpPost("{id:guid}/images")]
+    [Consumes("multipart/form-data")]
+    [ProducesResponseType(typeof(ProductDTO), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> UploadImages(Guid id, [FromForm] List<IFormFile> files)
+    {
+        if (files == null || files.Count == 0)
+        {
+            return BadRequest(new { message = "Не передано жодного файлу для завантаження." });
+        }
+
+        var updatedProduct = await _productService.AddImagesAsync(id, files);
+        if (updatedProduct == null)
+        {
+            return NotFound(new { message = $"Товар з ID {id} не знайдено." });
+        }
+
+        return Ok(updatedProduct);
     }
 
     /// <summary>
