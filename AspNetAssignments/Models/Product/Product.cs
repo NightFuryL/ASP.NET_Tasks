@@ -24,5 +24,7 @@ public class Product
 
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
+    public List<ProductImage> Images { get; set; } = new();
+
     public bool IsDeleted { get; set; } = false;
 }

@@ -15,6 +15,7 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Product> Products => Set<Product>();
+    public DbSet<ProductImage> ProductImages => Set<ProductImage>();
     public DbSet<User> Users => Set<User>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
@@ -39,7 +40,22 @@ public class AppDbContext : DbContext
 
             // Фільтрація м'яко видалених записів
             entity.HasQueryFilter(p => !p.IsDeleted);
+
+            entity.HasMany(p => p.Images)
+                  .WithOne(i => i.Product)
+                  .HasForeignKey(i => i.ProductId)
+                  .OnDelete(DeleteBehavior.Cascade);
         });
+
+        // Конфігурація сутності ProductImage
+        modelBuilder.Entity<ProductImage>(entity =>
+        {
+            entity.HasKey(pi => pi.Id);
+            entity.Property(pi => pi.ImageUrl).IsRequired().HasMaxLength(500);
+
+            entity.HasQueryFilter(pi => !pi.Product.IsDeleted);
+        });
+
 
         // Конфігурація сутності User
         modelBuilder.Entity<User>(entity =>

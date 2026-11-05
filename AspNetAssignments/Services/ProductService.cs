@@ -1,4 +1,5 @@
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using AspNetAssignments.Data;
 using AspNetAssignments.DTOs.Pagination;
@@ -15,11 +16,14 @@ public class ProductService : IProductService
 {
     private readonly AppDbContext _context;
     private readonly IMapper _mapper;
+    private readonly IFileService _fileService;
+    private const string ProductImagesSubFolder = "products";
 
-    public ProductService(AppDbContext context, IMapper mapper)
+    public ProductService(AppDbContext context, IMapper mapper, IFileService fileService)
     {
         _context = context;
         _mapper = mapper;
+        _fileService = fileService;
     }
 
     /// <summary>
@@ -27,7 +31,11 @@ public class ProductService : IProductService
     /// </summary>
     public async Task<PageResponse<ProductDTO>> GetPagedAsync(ProductQueryParams queryParams)
     {
-        var query = _context.Products.AsNoTracking().Where(p => !p.IsDeleted).AsQueryable();
+        var query = _context.Products
+            .Include(p => p.Images)
+            .AsNoTracking()
+            .Where(p => !p.IsDeleted)
+            .AsQueryable();
 
         // Пошук за назвою або описом
         if (!string.IsNullOrWhiteSpace(queryParams.Name))
@@ -75,6 +83,7 @@ public class ProductService : IProductService
     public async Task<List<ProductDTO>> GetAllProductsAsync()
     {
         var products = await _context.Products
+            .Include(p => p.Images)
             .AsNoTracking()
             .Where(p => !p.IsDeleted)
             .ToListAsync();
@@ -88,6 +97,7 @@ public class ProductService : IProductService
     public async Task<ProductDTO?> GetProductByIdAsync(Guid id)
     {
         var product = await _context.Products
+            .Include(p => p.Images)
             .AsNoTracking()
             .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
 
@@ -95,11 +105,30 @@ public class ProductService : IProductService
     }
 
     /// <summary>
-    /// Додає новий товар до бази даних
+    /// Додає новий товар до бази даних із можливістю завантаження декількох фотографій
     /// </summary>
     public async Task<ProductDTO> CreateProductAsync(CreateProductDTO dto)
     {
         var product = _mapper.Map<Product>(dto);
+
+        // Збереження списку фотографій товару
+        if (dto.Images != null && dto.Images.Count > 0)
+        {
+            foreach (var file in dto.Images)
+            {
+                if (file.Length > 0)
+                {
+                    var fileResult = await _fileService.SaveFileAsync(file, ProductImagesSubFolder);
+                    product.Images.Add(new ProductImage
+                    {
+                        Id = Guid.NewGuid(),
+                        ProductId = product.Id,
+                        ImageUrl = fileResult.RelativePath
+                    });
+                }
+            }
+        }
+
         await _context.Products.AddAsync(product);
         await _context.SaveChangesAsync();
 
@@ -111,7 +140,9 @@ public class ProductService : IProductService
     /// </summary>
     public async Task<ProductDTO?> UpdateProductAsync(Guid id, UpdateProductDTO dto)
     {
-        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+        var product = await _context.Products
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
         if (product == null) return null;
 
         product.Name = dto.Name;
@@ -124,11 +155,44 @@ public class ProductService : IProductService
     }
 
     /// <summary>
+    /// Додає додаткові фотографії до існуючого товару
+    /// </summary>
+    public async Task<ProductDTO?> AddImagesAsync(Guid id, List<IFormFile> files)
+    {
+        var product = await _context.Products
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+        if (product == null) return null;
+
+        if (files != null && files.Count > 0)
+        {
+            foreach (var file in files)
+            {
+                if (file.Length > 0)
+                {
+                    var fileResult = await _fileService.SaveFileAsync(file, ProductImagesSubFolder);
+                    product.Images.Add(new ProductImage
+                    {
+                        Id = Guid.NewGuid(),
+                        ProductId = product.Id,
+                        ImageUrl = fileResult.RelativePath
+                    });
+                }
+            }
+            await _context.SaveChangesAsync();
+        }
+
+        return _mapper.Map<ProductDTO>(product);
+    }
+
+    /// <summary>
     /// Виконує м'яке видалення товару, встановлюючи IsDeleted = true
     /// </summary>
     public async Task<bool> DeleteAsync(Guid id)
     {
-        var product = await _context.Products.FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
+        var product = await _context.Products
+            .Include(p => p.Images)
+            .FirstOrDefaultAsync(p => p.Id == id && !p.IsDeleted);
         if (product == null) return false;
 
         product.IsDeleted = true;
