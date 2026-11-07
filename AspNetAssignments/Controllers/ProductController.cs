@@ -146,4 +146,11 @@ public class ProductController : ControllerBase
 
         return NoContent();
     }
+
+    [HttpGet("me")]
+    public IActionResult GetClientInfo()
+    {
+        var clientId = HttpContext.Items["ClientAppId"]?.ToString();
+        return Ok(new { ClientId = clientId, Status = "Authenticated" });
+    }
 }

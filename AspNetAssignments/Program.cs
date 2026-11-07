@@ -80,6 +80,8 @@ public class Program
         // Глобальне перехоплення помилок
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+        app.UseApiKeyAuthentication();
+
         // Логування запитів із вимірюванням тривалості
         app.UseRequestLogging();
 
