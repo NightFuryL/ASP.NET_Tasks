@@ -10,7 +10,7 @@
 
 Репозиторій містить практичні, класні та домашні завдання з курсу ***ASP.NET Core (.NET 10, C#, Visual Studio 2026, Entity Framework Core)***.
 
-Усі початкові завдання збережено в гілці та далі в папці `/Archive` (гілка не злита), після чого весь ключовий функціонал було централізовано та розбито на одне структуроване рішення.
+Усі початкові завдання збережено в гілці та далі в папці **[`Archive`](https://github.com/NightFuryL/ASP.NET_Tasks/tree/archive-branch)** (гілка не злита), після чого весь ключовий функціонал було централізовано та розбито на одне структуроване рішення.
 
 ---
 
@@ -35,11 +35,11 @@
 * **Invoice -> `Invoice`**
 * **Project & TaskItem -> `Project`**
 
-<summary><b>Налаштування дозволених контролерів у Program.cs</b></summary>
+<b>Налаштування дозволених контролерів у Program.cs</b>
 
 <br>
 
-Ви можете обрати, з якими контролерами працювати наразі. Для цього просто додайте в метод параметр `"<назва>"` (замість `<назва>` вставте назву сутності, з якою хочете працювати, наприклад: `"Product"`):
+Ви можете обрати, з якими контролерами працювати наразі. Для цього просто дoдайте в метод параметр `"<назва>"` (замість `<назва>` вставте назву сутності, з якою хочете працювати, наприклад: `"Product"`):
 
 ```csharp
 // Реєстрація контролерів із глобальним фільтром валідації
@@ -83,7 +83,8 @@ builder.Services.AddControllers(options =>
   
 (Де, dd, mm та yyy - день, місяць та рік(повна дата), коли робили або дали завдання):  
 * Усі логічно завершені етапи фіксуються атомарними коммітами за конвенцією **Conventional Commits**:  
-  `feat: implement ValidationFilterAttribute for automated FluentValidation`, `feat: add RequestLoggingMiddleware with Stopwatch timing`, `feat: register global action filter in Program.cs` тощо.
+  `feat(<гілка_роботи>): implement ValidationFilterAttribute for automated FluentValidation`, `feat(<гілка_роботи>): add RequestLoggingMiddleware with Stopwatch timing`, `feat: register global action filter in Program.cs` тощо.
+* Замість `<гілка_роботи>` вставляється назва гілки, наприклад: `classwork-31-10-2026`, `hw-15-11-2026` тощо.
 * Після перевірки та тестування гілка зливається в основну гілку `main`.
  
 
