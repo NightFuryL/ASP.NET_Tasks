@@ -29,6 +29,7 @@
 ### Замість `<сутність>` требя замінити, на ту сутність, з якою треба працювати, але загальна назва, наприклад: `Product`:
 ***Наразі існують такі сутності в цьому проєкті:***
 * **Product -> `Product`**
+* **ProductEntity -> `ProductRepo`** (тільки для класної за 01.11.2026)
 * **Order & OrderTime -> `Order`**
 * **User -> `User`**
 * **Book -> `Book`**
@@ -59,10 +60,12 @@ builder.Services.AddControllers(options =>
 
 * **Data** — `using AspNetAssignments.Data;`
 * **Models** — `using AspNetAssignments.Models.<сутність>;`
+* **Entity** — `using AspNetAssignments.Entity.<сутність>;`  (поки що тільки для ProductEntity)
 * **DTOs** — `using AspNetAssignments.DTOs.<сутність>;`
 * **DTOs (Pagination)** — `using AspNetAssignments.DTOs.Pagination;`
 * **DTOs (Common)** — `using AspNetAssignments.DTOs.Common;`
 * **Validators** — `using AspNetAssignments.Validators.<сутність>;`
+* **Repository** - `using AspNetAssignments.Repository.<сутність>` (поки що тільки для ProductEntity)
 * **Services (Abstract)** — `using AspNetAssignments.Services.Abstract;`
 * **Services** — `using AspNetAssignments.Services;`
 * **Filters** — `using AspNetAssignments.Filters;`
@@ -91,9 +94,9 @@ builder.Services.AddControllers(options =>
 ---
 
 ## 🚀 Остання влита робота:
-### Домашня робота 31.10.2026
-Остання актуальна робота, що була перевірена та влита в `main` (або не влита, та знаходиться в гілці hw-31-10-2026):
+### Класна робота 01.11.2026
+Остання актуальна робота, що була перевірена та влита в `main` (або не влита, та знаходиться в гілці hw-01-11-2026):
 ### Підтвердження виконання (Скріншоти та результати тестування) для практичної або домашньої роботи:
 ## Почав використовувати Postman для тестування API, ось приклади запитів та результатів(тому що без нього були проблеми):
-![Немає](Images/1.jpg)
-![Немає](Images/2.jpg)
+![Немає](images/1.jpg)
+![Немає](images/2.jpg)

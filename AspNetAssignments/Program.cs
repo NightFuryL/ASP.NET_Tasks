@@ -2,6 +2,7 @@ using AspNetAssignments.Data;
 using AspNetAssignments.Filters;
 using AspNetAssignments.Mapping;
 using AspNetAssignments.Middleware;
+using AspNetAssignments.Repository.ProductRepo;
 using AspNetAssignments.Services;
 using AspNetAssignments.Services.Abstract;
 using FluentValidation;
@@ -62,6 +63,7 @@ public class Program
         // Реєстрація бізнес-сервісів у DI
         builder.Services.AddScoped<IProjectService, ProjectService>();
         builder.Services.AddScoped<ITaskItemService, TaskItemService>();
+        builder.Services.AddScoped<IProductRepository, ProductRepository>();
         #endregion
 
         // Налаштування Swagger документації API

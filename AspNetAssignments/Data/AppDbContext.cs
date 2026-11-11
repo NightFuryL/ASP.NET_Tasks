@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using AspNetAssignments.Models.Book;
 using AspNetAssignments.Models.Invoice;
 using AspNetAssignments.Models.Project;
+using AspNetAssignments.Entity.ProductRepo;
 #endregion
 namespace AspNetAssignments.Data;
 
@@ -22,6 +23,7 @@ public class AppDbContext : DbContext
     public DbSet<User> Users => Set<User>();
     public DbSet<Order> Orders => Set<Order>();
     public DbSet<OrderItem> OrderItems => Set<OrderItem>();
+    public DbSet<ProductEntity> ProductEntities => Set<ProductEntity>();
 
     #region Додаткові сутності
     public DbSet<Project> Projects => Set<Project>();
@@ -145,6 +147,24 @@ public class AppDbContext : DbContext
             entity.Property(b => b.Title).IsRequired().HasMaxLength(150);
             entity.Property(b => b.Author).IsRequired().HasMaxLength(100);
             entity.HasQueryFilter(b => !b.IsDeleted);
+        });
+
+        modelBuilder.Entity<ProductEntity>(entity =>
+        {
+            entity.HasKey(p => p.Id);
+
+            entity.Property(p => p.Name)
+                .IsRequired()
+                .HasMaxLength(150);
+            entity.Property(p => p.Sku)
+                .IsRequired()
+                .HasMaxLength(12);
+
+            entity.HasIndex(p => p.Sku)
+                .IsUnique();
+
+            entity.Property(p => p.Price)
+                .HasPrecision(18, 2);
         });
         #endregion
     }
