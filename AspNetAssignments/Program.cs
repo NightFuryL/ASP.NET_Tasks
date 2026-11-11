@@ -6,6 +6,7 @@ using AspNetAssignments.Services;
 using AspNetAssignments.Services.Abstract;
 using FluentValidation;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi;
 
 namespace AspNetAssignments;
 
@@ -31,7 +32,7 @@ public class Program
 
             // Строка нижче потрібна для обмеження доступу до контролерів лише з дозволеного списку
             // Якщо список дозволених контролерів порожній, то доступ до всіх контролерів буде дозволений
-            options.Conventions.Add(new OnlyAllowedControllersConvention("Product", "User"));
+            options.Conventions.Add(new OnlyAllowedControllersConvention("User"));
         });
 
 
@@ -73,12 +74,42 @@ public class Program
                 Version = "v1",
                 Description = "REST API сервіс для управління товарами, користувачами та замовленнями"
             });
+
+            c.AddSecurityDefinition("ApiKey", new Microsoft.OpenApi.OpenApiSecurityScheme
+            {
+                Description = "Введите API Ключ (your-api-key)",
+                Name = "X-API-KEY",
+                In = Microsoft.OpenApi.ParameterLocation.Header,
+                Type = Microsoft.OpenApi.SecuritySchemeType.ApiKey
+            });
+
+            c.AddSecurityDefinition("UserId", new Microsoft.OpenApi.OpenApiSecurityScheme
+            {
+                Description = "Введите ID пользователя (GUID)",
+                Name = "X-User-Id",
+                In = Microsoft.OpenApi.ParameterLocation.Header,
+                Type = Microsoft.OpenApi.SecuritySchemeType.ApiKey
+            });
+
+            c.AddSecurityRequirement(_ => new Microsoft.OpenApi.OpenApiSecurityRequirement
+            {
+                {
+                    new Microsoft.OpenApi.OpenApiSecuritySchemeReference("ApiKey"),
+                    new List<string>()
+                },
+                {
+                    new Microsoft.OpenApi.OpenApiSecuritySchemeReference("UserId"),
+                    new List<string>()
+                }
+            });
         });
 
         var app = builder.Build();
 
         // Глобальне перехоплення помилок
         app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+        app.UseBlockedUser();
 
         app.UseApiKeyAuthentication();
 
