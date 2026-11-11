@@ -74,7 +74,7 @@ public class Program
                 Version = "v1",
                 Description = "REST API сервіс для управління товарами, користувачами та замовленнями"
             });
-
+            /*
             c.AddSecurityDefinition("ApiKey", new Microsoft.OpenApi.OpenApiSecurityScheme
             {
                 Description = "Введите API Ключ (your-api-key)",
@@ -82,7 +82,10 @@ public class Program
                 In = Microsoft.OpenApi.ParameterLocation.Header,
                 Type = Microsoft.OpenApi.SecuritySchemeType.ApiKey
             });
+            */
 
+
+            /*
             c.AddSecurityDefinition("UserId", new Microsoft.OpenApi.OpenApiSecurityScheme
             {
                 Description = "Введите ID пользователя (GUID)",
@@ -90,8 +93,9 @@ public class Program
                 In = Microsoft.OpenApi.ParameterLocation.Header,
                 Type = Microsoft.OpenApi.SecuritySchemeType.ApiKey
             });
+            */
 
-            c.AddSecurityRequirement(_ => new Microsoft.OpenApi.OpenApiSecurityRequirement
+            /*c.AddSecurityRequirement(_ => new Microsoft.OpenApi.OpenApiSecurityRequirement
             {
                 {
                     new Microsoft.OpenApi.OpenApiSecuritySchemeReference("ApiKey"),
@@ -102,6 +106,7 @@ public class Program
                     new List<string>()
                 }
             });
+            */
         });
 
         var app = builder.Build();
@@ -109,9 +114,11 @@ public class Program
         // Глобальне перехоплення помилок
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
+        app.UseLanguageValidation();
+
         app.UseBlockedUser();
 
-        app.UseApiKeyAuthentication();
+        //app.UseApiKeyAuthentication();
 
         // Логування запитів із вимірюванням тривалості
         app.UseRequestLogging();
