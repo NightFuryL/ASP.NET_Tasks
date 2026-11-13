@@ -20,9 +20,9 @@
 * **Об'єднання проєктів UserManager та Shop (Єдина архітектура та спільна БД)**:
   * Поєднано модуль користувачів (`UserManager`) та модуль магазину/замовлень (`Shop`) в єдину багатошарову структуру із централізованим Dependency Injection (DI) та спільним контекстом `AppDbContext`.
   * Реалізовано реляційні зв'язки між сутностями:
-    * **User (1) ↔ (N) Order**: користувач має список замовлень `Orders`, у замовленні наявне зовнішнє посилання `UserId` та навігаційна властивість `User`.
-    * **Order (1) ↔ (N) OrderItem**: кожне замовлення містить перелік позицій `Items`, позиція зберігає `OrderId` та посилання на `Order`.
-    * **OrderItem (N) ↔ (1) Product**: позиція замовлення посилається на конкретний товар через `ProductId` (`Guid?`) та властивість `Product`.
+    * **User (1) <-> (N) Order**: користувач має список замовлень `Orders`, у замовленні наявне зовнішнє посилання `UserId` та навігаційна властивість `User`.
+    * **Order (1) <-> (N) OrderItem**: кожне замовлення містить перелік позицій `Items`, позиція зберігає `OrderId` та посилання на `Order`.
+    * **OrderItem (N) <-> (1) Product**: позиція замовлення посилається на конкретний товар через `ProductId` (`Guid?`) та властивість `Product`.
 * **Product (Товар) & FluentValidation + Global Validation Filter**
 * **User (Користувач / Клієнт)**
 * **Order & OrderItem (Замовлення та товарні позиції)**
@@ -61,24 +61,33 @@ builder.Services.AddControllers(options =>
 
 > Повний код конфігурації дивіться у файлі: [`Program.cs`](./AspNetAssignments/Program.cs)
 
-### Самі простори імен:
+# Самі простори імен
+### Головний проєкт [AspNetAssignments](AspNetAssignments):
 
-* **Data** — `using AspNetAssignments.Data;`
-* **Models** — `using AspNetAssignments.Models.<сутність>;`
-* **Entity** — `using AspNetAssignments.Entity.<сутність>;`
-* **DTOs** — `using AspNetAssignments.DTOs.<сутність>;`
-* **DTOs (Pagination)** — `using AspNetAssignments.DTOs.Pagination;`
-* **DTOs (Common)** — `using AspNetAssignments.DTOs.Common;`
-* **Validators** — `using AspNetAssignments.Validators.<сутність>;`
-* **Repository** — `using AspNetAssignments.Repository.<сутність>;`
-* **Services (Abstract)** — `using AspNetAssignments.Services.Abstract;`
-* **Services** — `using AspNetAssignments.Services;`
-* **Filters** — `using AspNetAssignments.Filters;`
-* **Middleware** — `using AspNetAssignments.Middleware;` 
-* **Controllers** — `using AspNetAssignments.Controllers;`
-* **Mapping** — `using AspNetAssignments.Mapping;` 
-* **Exceptions** — `using AspNetAssignments.Exceptions;` 
-* **Root / Program** — `using AspNetAssignments;` 
+> * **Data** — `using AspNetAssignments.Data;`
+>
+> * **Models** — `using AspNetAssignments.Models.<сутність>;`
+> * **Entity** — `using AspNetAssignments.Entity.<сутність>;`
+> * **DTOs** — `using AspNetAssignments.DTOs.<сутність>;`
+> * **DTOs (Pagination)** — `using AspNetAssignments.DTOs.Pagination;`
+> * **DTOs (Common)** — `using AspNetAssignments.DTOs.Common;`
+> * **Validators** — `using AspNetAssignments.Validators.<сутність>;`
+> * **Repository** — `using AspNetAssignments.Repository.<сутність>;`
+> * **Services (Abstract)** — `using AspNetAssignments.Services.Abstract;`
+> * **Services** — `using AspNetAssignments.Services;`
+> * **Filters** — `using AspNetAssignments.Filters;`
+> * **Middleware** — `using AspNetAssignments.Middleware;` 
+> * **Controllers** — `using AspNetAssignments.Controllers;`
+> * **Mapping** — `using AspNetAssignments.Mapping;` 
+> * **Exceptions** — `using AspNetAssignments.Exceptions;` 
+> * **Root / Program** — `using AspNetAssignments;` 
+
+### Проєкт [AspNetAssignments.Tests](AspNetAssignments.Tests):
+> * **Tests** — `using AspNetAssignments.Tests;`
+>
+> * **Controllers** — `using AspNetAssignments.Tests.Controllers;`
+
+
 
 ---
 
@@ -99,36 +108,25 @@ builder.Services.AddControllers(options =>
 ---
 
 ## 🚀 Остання влита робота:
-### Домашня робота за 01.11.2026 (hw-01-11-2026)
-* **Поєднано UserManager та Shop в одну систему**:
-  * Об'єднано управління користувачами та магазином (товари, замовлення, позиції замовлень) під спільний `AppDbContext`.
-  * Встановлено повноцінні зв'язки між сутностями: `User` (1) <-> (N) `Order` (1) <-> (N) `OrderItem` (N) <-> (1) `Product`.
-  * Оновлено сервіси (`OrderService`, `UserService`), DTOs та мапінги AutoMapper.
-  * Додано отримання замовлень за `UserId` як у `OrderController`, так і у `UserController`.
-  * Налаштовано Dependency Injection та зареєстровано активні контролери в `Program.cs`.
-  * Додано декілька запитів в файлі [AspNetAssignments.http](AspNetAssignments/AspNetAssignments.http) (треба перевірити на коректність)
+### Класна робота за 07.11.2026 (classwork-07-11-2026):
+* **Було реалізовано:**
+  * Виправлено створення `UserController` у модульному тесті `UserControllerTests`.
+  * Додано mock-об’єкт для залежності `IOrderService`.
+  * Передано необхідні залежності `IUserService` та `IOrderService` у конструктор контролера.
+  * Налаштовано тест отримання користувача за ідентифікатором.
+  * Перевірено, що метод `GetById` повертає успішний HTTP-відповідь `200 OK`, якщо користувач існує.
+* **Чого навчилися:**
+  * Створювати mock-об’єкти за допомогою бібліотеки `Moq`.
+  * Передавати всі необхідні залежності під час тестування класів із використанням dependency injection.
+  * Налаштовувати поведінку mock-сервісів через `Setup` і `ReturnsAsync`.
+  * Перевіряти тип і статус результату дії контролера за допомогою `xUnit`.
+  * Розуміти, що для створення контролера в тесті потрібно передати всі обов’язкові параметри його конструктора, навіть якщо конкретний тест не використовує кожну залежність.
+
 ### Підтвердження виконання (Скріншоти та результати тестування) для практичної або домашньої роботи:
-Почав використовувати Postman для тестування API, ось приклади запитів та результатів(тому що без нього були проблеми):
-Спочатку попросив ШІ згенерувати колекцію(Postman Collection) для тестування API, який я імпортував у Postman. 
-
----
-![Немає](images/1.jpg)
-
-Просто перелік послідовних запитів до серверу, які перевіряють роботу контролерів та сервісів.
-
----
-![Немає](images/2.jpg)
-
-Перша частина, підтвердження роботи контролерів та сервісів, всі запити успішні, отримав очікувані результати.
-
----
-![Немає](images/3.jpg)
-
-Друга частина, підтвердження роботи контролерів та сервісів, всі запити успішні, отримав очікувані результати. 
-
----
-![Немає](images/4.jpg)
-
-Скріншот із SQL Server Object Explorer, де видно, наприклад, те що після всіх запитів бачимо, що є користувач та він був видалений(IsDeleted = true)
-
----
+### Класна робота за 07.11.2026 (classwork-07-11-2026):
+* **Було реалізовано:**
+### Підтвердження виконання (Скріншоти та результати тестування) для практичної або домашньої роботи:
+![немає](images/0.jpg)
+![немає](images/0.jpg)
+![немає](images/0.jpg)
+![немає](images/0.jpg)
