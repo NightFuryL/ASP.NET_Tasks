@@ -5,7 +5,7 @@ using AspNetAssignments.Services.Abstract;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace AspNetAssignments.Tests.TestControllers;
+namespace AspNetAssignments.Tests.TestControllers.User;
 
 public class UserControllerTests
 {

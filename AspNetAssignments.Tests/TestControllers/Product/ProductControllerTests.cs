@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 
-namespace AspNetAssignments.Tests.TestControllers;
+namespace AspNetAssignments.Tests.TestControllers.Product;
 
 public class ProductControllerTests
 {

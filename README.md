@@ -85,7 +85,8 @@ builder.Services.AddControllers(options =>
 ### Проєкт [AspNetAssignments.Tests](AspNetAssignments.Tests):
 > * **Tests** — `using AspNetAssignments.Tests;`
 >
-> * **Controllers** — `using AspNetAssignments.Tests.TestControllers;`
+> * **TestControllers** — `using AspNetAssignments.Tests.TestControllers.<сутність>;`
+> * **Integration** — `using AspNetAssignments.Tests.IntegrationTests.<сутність>;`
 
 
 
@@ -108,8 +109,6 @@ builder.Services.AddControllers(options =>
 ---
 
 ## 🚀 Остання влита робота:
-### Домашня робота за 07.11.2026 (hw-07-11-2026):
-Було трохи складно, але якось зробив, я не знаю як саме повинны були реалізовані юніт тести, то хробив як зрозумів,
-але можу переробити їх, якщо буде потрібно
+### Класна робота за 08.11.2026 (classwork-08-11-2026):
 ### Підтвердження виконання (Скріншоти та результати тестування) для практичної або домашньої роботи:
-![немає](images/1.png)
+![немає](images/0.png)
