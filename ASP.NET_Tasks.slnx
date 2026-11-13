@@ -1,3 +1,4 @@
 <Solution>
+  <Project Path="AspNetAssignments.Tests/AspNetAssignments.Tests.csproj" Id="6970e303-4ddf-4ee8-9308-2e5ef605b674" />
   <Project Path="AspNetAssignments/AspNetAssignments.csproj" Id="0398e7e6-16e1-4e62-b002-5d2f15b15312" />
 </Solution>
