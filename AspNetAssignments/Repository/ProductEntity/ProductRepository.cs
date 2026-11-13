@@ -1,5 +1,5 @@
 ﻿using AspNetAssignments.Data;
-using AspNetAssignments.Entity.ProductRepo;
+using AspNetAssignments.Entities.ProductRepo;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetAssignments.Repository.ProductRepo;

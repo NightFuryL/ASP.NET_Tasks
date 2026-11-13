@@ -1,4 +1,4 @@
-﻿namespace AspNetAssignments.Entity.ProductRepo;
+﻿namespace AspNetAssignments.Entities.ProductRepo;
 
 public class ProductEntity
 {

@@ -1,9 +1,10 @@
 using System.ComponentModel.DataAnnotations;
+using AspNetAssignments.Models.Order;
 
 namespace AspNetAssignments.Models.User;
 
 /// <summary>
-/// Сутність користувача системи з підтримкою завантаження аватара
+/// Сутність користувача системи з підтримкою завантаження аватара та зв'язку із замовленнями
 /// </summary>
 public class User
 {
@@ -32,4 +33,9 @@ public class User
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public bool IsDeleted { get; set; } = false;
+
+    /// <summary>
+    /// Список замовлень користувача
+    /// </summary>
+    public List<Order.Order> Orders { get; set; } = new();
 }

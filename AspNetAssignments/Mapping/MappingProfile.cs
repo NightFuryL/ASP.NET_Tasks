@@ -48,6 +48,7 @@ public class MappingProfile : Profile
 
         // Мапінг для замовлень та позицій
         CreateMap<Order, OrderDTO>()
+            .ForMember(dest => dest.UserName, opt => opt.MapFrom(src => src.User != null ? $"{src.User.Name} {src.User.LastName}".Trim() : null))
             .ForMember(dest => dest.TotalAmount, opt => opt.MapFrom(src => src.TotalAmount));
         CreateMap<CreateOrderDTO, Order>()
             .ForMember(dest => dest.CreatedAt, opt => opt.MapFrom(src => DateTime.UtcNow))

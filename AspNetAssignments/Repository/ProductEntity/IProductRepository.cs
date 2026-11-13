@@ -1,4 +1,4 @@
-﻿using AspNetAssignments.Entity.ProductRepo;
+﻿using AspNetAssignments.Entities.ProductRepo;
 
 namespace AspNetAssignments.Repository.ProductRepo
 {

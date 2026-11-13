@@ -4,11 +4,11 @@ namespace AspNetAssignments.DTOs.Order;
 
 public class CreateOrderItemDTO
 {
-    [Required]
-    [Range(1, int.MaxValue, ErrorMessage = "ProductId має бути більшим за 0.")]
-    public int ProductId { get; set; }
+    public int? OrderId { get; set; }
 
-    [Required]
+    public Guid? ProductId { get; set; }
+
+    [Required(ErrorMessage = "Назва товару є обов'язковою.")]
     [MaxLength(150)]
     public string ProductName { get; set; } = string.Empty;
 

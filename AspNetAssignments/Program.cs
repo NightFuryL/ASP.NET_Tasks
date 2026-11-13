@@ -31,9 +31,9 @@ public class Program
         {
             options.Filters.Add<ValidationFilterAttribute>();
 
-            // Строка нижче потрібна для обмеження доступу до контролерів лише з дозволеного списку
+            // Рядок нижче потрібен для обмеження доступу до контролерів лише з дозволеного списку
             // Якщо список дозволених контролерів порожній, то доступ до всіх контролерів буде дозволений
-            options.Conventions.Add(new OnlyAllowedControllersConvention("User"));
+            options.Conventions.Add(new OnlyAllowedControllersConvention("User", "Product", "Order", "OrderItem"));
         });
 
 
@@ -116,9 +116,9 @@ public class Program
         // Глобальне перехоплення помилок
         app.UseMiddleware<ExceptionHandlingMiddleware>();
 
-        app.UseLanguageValidation();
-
-        app.UseBlockedUser();
+        //Було закоментовано, щоб було легше тестувати API без обмежень по мові та блокування користувачів
+        //app.UseLanguageValidation();
+        //app.UseBlockedUser();
 
         //app.UseApiKeyAuthentication();
 

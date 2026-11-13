@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using AspNetAssignments.Models.Book;
 using AspNetAssignments.Models.Invoice;
 using AspNetAssignments.Models.Project;
-using AspNetAssignments.Entity.ProductRepo;
+using AspNetAssignments.Entities.ProductRepo;
 #endregion
 namespace AspNetAssignments.Data;
 
@@ -83,6 +83,12 @@ public class AppDbContext : DbContext
 
             // Фільтрація м'яко видалених записів
             entity.HasQueryFilter(u => !u.IsDeleted);
+
+            // Зв'язок User (1) -> Order (*)
+            entity.HasMany(u => u.Orders)
+                  .WithOne(o => o.User)
+                  .HasForeignKey(o => o.UserId)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
 
         // Конфігурація сутностей Order та OrderItem
@@ -93,6 +99,13 @@ public class AppDbContext : DbContext
             entity.Property(o => o.CreatedAt).IsRequired();
             entity.Property(o => o.IsDeleted).IsRequired();
 
+            // Зв'язок Order (*) -> User (1)
+            entity.HasOne(o => o.User)
+                  .WithMany(u => u.Orders)
+                  .HasForeignKey(o => o.UserId)
+                  .OnDelete(DeleteBehavior.SetNull);
+
+            // Зв'язок Order (1) -> OrderItem (*)
             entity.HasMany(o => o.Items)
                   .WithOne(i => i.Order)
                   .HasForeignKey(i => i.OrderId)
@@ -106,6 +119,12 @@ public class AppDbContext : DbContext
             entity.HasKey(i => i.Id);
             entity.Property(i => i.ProductName).IsRequired().HasMaxLength(150);
             entity.Property(i => i.UnitPrice).HasColumnType("decimal(18,2)");
+
+            // Зв'язок OrderItem (*) -> Product (1)
+            entity.HasOne(i => i.Product)
+                  .WithMany(p => p.OrderItems)
+                  .HasForeignKey(i => i.ProductId)
+                  .OnDelete(DeleteBehavior.SetNull);
         });
 
         #region Додаткові сутності

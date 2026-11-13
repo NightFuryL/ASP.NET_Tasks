@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using AspNetAssignments.Models.Product;
 
 namespace AspNetAssignments.Models.Order;
 
@@ -15,7 +16,13 @@ public class OrderItem
     [ForeignKey("OrderId")]
     public Order? Order { get; set; }
 
-    public int ProductId { get; set; }
+    /// <summary>
+    /// Ідентифікатор товару в системі
+    /// </summary>
+    public Guid? ProductId { get; set; }
+
+    [ForeignKey("ProductId")]
+    public Product.Product? Product { get; set; }
 
     [Required]
     [MaxLength(150)]

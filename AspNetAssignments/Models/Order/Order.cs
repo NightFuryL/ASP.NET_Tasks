@@ -1,4 +1,6 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using AspNetAssignments.Models.User;
 
 namespace AspNetAssignments.Models.Order;
 
@@ -8,6 +10,14 @@ namespace AspNetAssignments.Models.Order;
 public class Order
 {
     public int Id { get; set; }
+
+    /// <summary>
+    /// Ідентифікатор користувача, який оформив замовлення
+    /// </summary>
+    public Guid? UserId { get; set; }
+
+    [ForeignKey("UserId")]
+    public User.User? User { get; set; }
 
     [Required]
     [MaxLength(50)]
