@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using AspNetAssignments.Models.Order;
 
 namespace AspNetAssignments.Models.Product;
 
@@ -25,6 +26,11 @@ public class Product
     public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
 
     public List<ProductImage> Images { get; set; } = new();
+
+    /// <summary>
+    /// Позиції в замовленнях, де замовлено цей товар
+    /// </summary>
+    public List<OrderItem> OrderItems { get; set; } = new();
 
     public bool IsDeleted { get; set; } = false;
 }

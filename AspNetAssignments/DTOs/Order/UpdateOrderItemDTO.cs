@@ -4,7 +4,9 @@ namespace AspNetAssignments.DTOs.Order;
 
 public class UpdateOrderItemDTO
 {
-    [Required]
+    public Guid? ProductId { get; set; }
+
+    [Required(ErrorMessage = "Назва товару є обов'язковою.")]
     [MaxLength(150)]
     public string ProductName { get; set; } = string.Empty;
 

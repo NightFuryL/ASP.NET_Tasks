@@ -22,12 +22,13 @@ public class OrderService : IOrderService
     }
 
     /// <summary>
-    /// Отримує всі замовлення разом із їхніми товарними позиціями
+    /// Отримує всі замовлення разом із їхніми товарними позиціями та інформацією про клієнта
     /// </summary>
     public async Task<List<OrderDTO>> GetAllOrdersAsync()
     {
         var orders = await _context.Orders
             .Include(o => o.Items)
+            .Include(o => o.User)
             .AsNoTracking()
             .Where(o => !o.IsDeleted)
             .ToListAsync();
@@ -42,10 +43,26 @@ public class OrderService : IOrderService
     {
         var order = await _context.Orders
             .Include(o => o.Items)
+            .Include(o => o.User)
             .AsNoTracking()
             .FirstOrDefaultAsync(o => o.Id == id && !o.IsDeleted);
 
         return order == null ? null : _mapper.Map<OrderDTO>(order);
+    }
+
+    /// <summary>
+    /// Отримує всі замовлення конкретного користувача
+    /// </summary>
+    public async Task<List<OrderDTO>> GetOrdersByUserIdAsync(Guid userId)
+    {
+        var orders = await _context.Orders
+            .Include(o => o.Items)
+            .Include(o => o.User)
+            .AsNoTracking()
+            .Where(o => o.UserId == userId && !o.IsDeleted)
+            .ToListAsync();
+
+        return _mapper.Map<List<OrderDTO>>(orders);
     }
 
     /// <summary>
@@ -55,6 +72,7 @@ public class OrderService : IOrderService
     {
         var query = _context.Orders
             .Include(o => o.Items)
+            .Include(o => o.User)
             .AsNoTracking()
             .Where(o => !o.IsDeleted);
 
@@ -74,25 +92,54 @@ public class OrderService : IOrderService
     }
 
     /// <summary>
-    /// Створює нове замовлення разом із вкладеним переліком товарів
+    /// Створює нове замовлення разом із вкладеним переліком товарів та зв'язком із користувачем і товарами
     /// </summary>
     public async Task<OrderDTO> CreateOrderAsync(CreateOrderDTO dto)
     {
         var order = new Order
         {
+            UserId = dto.UserId,
             OrderNumber = dto.OrderNumber.Trim(),
-            CreatedAt = DateTime.UtcNow,
-            Items = dto.Items.Select(i => new OrderItem
-            {
-                ProductId = i.ProductId,
-                ProductName = i.ProductName,
-                UnitPrice = i.UnitPrice,
-                Quantity = i.Quantity
-            }).ToList()
+            CreatedAt = DateTime.UtcNow
         };
+
+        foreach (var itemDto in dto.Items)
+        {
+            var item = new OrderItem
+            {
+                ProductId = itemDto.ProductId,
+                ProductName = itemDto.ProductName?.Trim() ?? string.Empty,
+                UnitPrice = itemDto.UnitPrice,
+                Quantity = itemDto.Quantity
+            };
+
+            // Автопідтягування назви та ціни товару з таблиці Products за наявності ProductId
+            if (itemDto.ProductId.HasValue && (string.IsNullOrWhiteSpace(item.ProductName) || item.UnitPrice == 0))
+            {
+                var product = await _context.Products.FindAsync(itemDto.ProductId.Value);
+                if (product != null)
+                {
+                    if (string.IsNullOrWhiteSpace(item.ProductName))
+                    {
+                        item.ProductName = product.Name;
+                    }
+                    if (item.UnitPrice == 0)
+                    {
+                        item.UnitPrice = product.Price;
+                    }
+                }
+            }
+
+            order.Items.Add(item);
+        }
 
         await _context.Orders.AddAsync(order);
         await _context.SaveChangesAsync();
+
+        if (order.UserId.HasValue)
+        {
+            await _context.Entry(order).Reference(o => o.User).LoadAsync();
+        }
 
         return _mapper.Map<OrderDTO>(order);
     }
@@ -140,6 +187,24 @@ public class OrderService : IOrderService
     public async Task<OrderItemDTO> CreateItemAsync(CreateOrderItemDTO dto)
     {
         var item = _mapper.Map<OrderItem>(dto);
+
+        // Якщо вказано ProductId і не вказано назву або ціну, беремо з сутності Product
+        if (dto.ProductId.HasValue && (string.IsNullOrWhiteSpace(item.ProductName) || item.UnitPrice == 0))
+        {
+            var product = await _context.Products.FindAsync(dto.ProductId.Value);
+            if (product != null)
+            {
+                if (string.IsNullOrWhiteSpace(item.ProductName))
+                {
+                    item.ProductName = product.Name;
+                }
+                if (item.UnitPrice == 0)
+                {
+                    item.UnitPrice = product.Price;
+                }
+            }
+        }
+
         await _context.OrderItems.AddAsync(item);
         await _context.SaveChangesAsync();
 
@@ -154,6 +219,7 @@ public class OrderService : IOrderService
         var item = await _context.OrderItems.FindAsync(id);
         if (item == null) return null;
 
+        item.ProductId = dto.ProductId;
         item.ProductName = dto.ProductName.Trim();
         item.UnitPrice = dto.UnitPrice;
         item.Quantity = dto.Quantity;

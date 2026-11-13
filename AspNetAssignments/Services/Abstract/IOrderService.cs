@@ -18,6 +18,11 @@ public interface IOrderService
     Task<OrderDTO?> GetOrderByIdAsync(int id);
 
     /// <summary>
+    /// Отримує перелік усіх замовлень користувача за його ідентифікатором
+    /// </summary>
+    Task<List<OrderDTO>> GetOrdersByUserIdAsync(Guid userId);
+
+    /// <summary>
     /// Шукає замовлення за номером та мінімальною сумою
     /// </summary>
     Task<List<OrderDTO>> SearchOrdersAsync(string number, decimal? minTotal);

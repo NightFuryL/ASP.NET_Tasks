@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using FluentValidation;
+using AspNetAssignments.DTOs.Order;
 using AspNetAssignments.DTOs.User;
 using AspNetAssignments.Services.Abstract;
 
@@ -14,10 +15,12 @@ namespace AspNetAssignments.Controllers;
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
+    private readonly IOrderService _orderService;
 
-    public UserController(IUserService userService)
+    public UserController(IUserService userService, IOrderService orderService)
     {
         _userService = userService;
+        _orderService = orderService;
     }
 
     /// <summary>
@@ -45,6 +48,24 @@ public class UserController : ControllerBase
             return NotFound(new { message = $"Користувача з ID {id} не знайдено." });
         }
         return Ok(user);
+    }
+
+    /// <summary>
+    /// Отримати всі замовлення користувача за його ідентифікатором
+    /// </summary>
+    [HttpGet("{id:guid}/orders")]
+    [ProducesResponseType(typeof(List<OrderDTO>), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    public async Task<IActionResult> GetUserOrders(Guid id)
+    {
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user == null)
+        {
+            return NotFound(new { message = $"Користувача з ID {id} не знайдено." });
+        }
+
+        var orders = await _orderService.GetOrdersByUserIdAsync(id);
+        return Ok(orders);
     }
 
     /// <summary>

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetAssignments.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20261105221014_Update_with_refactoring_solution")]
-    partial class Update_with_refactoring_solution
+    [Migration("20261112164139_hw_01_11_2026")]
+    partial class hw_01_11_2026
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,43 @@ namespace AspNetAssignments.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("AspNetAssignments.Entities.ProductRepo.ProductEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)");
+
+                    b.Property<decimal>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasMaxLength(12)
+                        .HasColumnType("nvarchar(12)");
+
+                    b.Property<int>("StockQuantity")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Sku")
+                        .IsUnique();
+
+                    b.ToTable("ProductEntities");
+                });
 
             modelBuilder.Entity("AspNetAssignments.Models.Book.Book", b =>
                 {
@@ -105,7 +142,12 @@ namespace AspNetAssignments.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Orders");
                 });
@@ -121,8 +163,8 @@ namespace AspNetAssignments.Migrations
                     b.Property<int?>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
+                    b.Property<Guid?>("ProductId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ProductName")
                         .IsRequired()
@@ -138,6 +180,8 @@ namespace AspNetAssignments.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItems");
                 });
@@ -306,6 +350,16 @@ namespace AspNetAssignments.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("AspNetAssignments.Models.Order.Order", b =>
+                {
+                    b.HasOne("AspNetAssignments.Models.User.User", "User")
+                        .WithMany("Orders")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AspNetAssignments.Models.Order.OrderItem", b =>
                 {
                     b.HasOne("AspNetAssignments.Models.Order.Order", "Order")
@@ -313,7 +367,14 @@ namespace AspNetAssignments.Migrations
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade);
 
+                    b.HasOne("AspNetAssignments.Models.Product.Product", "Product")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
                     b.Navigation("Order");
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("AspNetAssignments.Models.Product.ProductImage", b =>
@@ -346,11 +407,18 @@ namespace AspNetAssignments.Migrations
             modelBuilder.Entity("AspNetAssignments.Models.Product.Product", b =>
                 {
                     b.Navigation("Images");
+
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("AspNetAssignments.Models.Project.Project", b =>
                 {
                     b.Navigation("Tasks");
+                });
+
+            modelBuilder.Entity("AspNetAssignments.Models.User.User", b =>
+                {
+                    b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618
         }

@@ -17,20 +17,26 @@
 ## 📌 Структура проєкту
 ### Сюди винесено весь функціонал сутностей, з якими велася систематична робота протягом курсу:
 
-* **Product (Товар) & FluentValidation + Global Validation Filter**:
-* **User (Користувач / Клієнт)**:
-* **Order & OrderItem (Замовлення та позиції)**:
+* **Об'єднання проєктів UserManager та Shop (Єдина архітектура та спільна БД)**:
+  * Поєднано модуль користувачів (`UserManager`) та модуль магазину/замовлень (`Shop`) в єдину багатошарову структуру із централізованим Dependency Injection (DI) та спільним контекстом `AppDbContext`.
+  * Реалізовано реляційні зв'язки між сутностями:
+    * **User (1) ↔ (N) Order**: користувач має список замовлень `Orders`, у замовленні наявне зовнішнє посилання `UserId` та навігаційна властивість `User`.
+    * **Order (1) ↔ (N) OrderItem**: кожне замовлення містить перелік позицій `Items`, позиція зберігає `OrderId` та посилання на `Order`.
+    * **OrderItem (N) ↔ (1) Product**: позиція замовлення посилається на конкретний товар через `ProductId` (`Guid?`) та властивість `Product`.
+* **Product (Товар) & FluentValidation + Global Validation Filter**
+* **User (Користувач / Клієнт)**
+* **Order & OrderItem (Замовлення та товарні позиції)**
 * **Book (Книги)**
 * **Invoice (Рахунки/Інвойси)**
 * **Project & TaskItem (Проєкти та задачі)**
 
 ---
 ## 🗂 Простори імен та робота із контролерами
-### Замість `<сутність>` требя замінити, на ту сутність, з якою треба працювати, але загальна назва, наприклад: `Product`:
+### Замість `<сутність>` треба замінити на ту сутність, з якою треба працювати, наприклад: `Product`:
 ***Наразі існують такі сутності в цьому проєкті:***
 * **Product -> `Product`**
-* **ProductEntity -> `ProductRepo`** (тільки для класної за 01.11.2026)
-* **Order & OrderTime -> `Order`**
+* **ProductEntity -> `ProductRepo`** (для роботи з патерном Repository)
+* **Order & OrderItem -> `Order`, `OrderItem`**
 * **User -> `User`**
 * **Book -> `Book`**
 * **Invoice -> `Invoice`**
@@ -40,7 +46,7 @@
 
 <br>
 
-Ви можете обрати, з якими контролерами працювати наразі. Для цього просто дoдайте в метод параметр `"<назва>"` (замість `<назва>` вставте назву сутності, з якою хочете працювати, наприклад: `"Product"`):
+Ви можете обрати, з якими контролерами працювати наразі. Для цього просто додайте в метод параметр `"<назва>"` (замість `<назва>` вставте назву сутності, з якою хочете працювати):
 
 ```csharp
 // Реєстрація контролерів із глобальним фільтром валідації
@@ -48,9 +54,8 @@ builder.Services.AddControllers(options =>
 {
     options.Filters.Add<ValidationFilterAttribute>();
 
-    // Рядок нижче потрібен для обмеження доступу до контролерів лише з дозволеного списку
-    // Якщо список дозволених контролерів порожній, то доступ до всіх контролерів буде дозволений
-    options.Conventions.Add(new OnlyAllowedControllersConvention("Product", "User"));
+    // Дозволено контролери модулів UserManager та Shop
+    options.Conventions.Add(new OnlyAllowedControllersConvention("User", "Product", "Order", "OrderItem"));
 });
 ```
 
@@ -60,12 +65,12 @@ builder.Services.AddControllers(options =>
 
 * **Data** — `using AspNetAssignments.Data;`
 * **Models** — `using AspNetAssignments.Models.<сутність>;`
-* **Entity** — `using AspNetAssignments.Entity.<сутність>;`  (поки що тільки для ProductEntity)
+* **Entity** — `using AspNetAssignments.Entity.<сутність>;`
 * **DTOs** — `using AspNetAssignments.DTOs.<сутність>;`
 * **DTOs (Pagination)** — `using AspNetAssignments.DTOs.Pagination;`
 * **DTOs (Common)** — `using AspNetAssignments.DTOs.Common;`
 * **Validators** — `using AspNetAssignments.Validators.<сутність>;`
-* **Repository** - `using AspNetAssignments.Repository.<сутність>` (поки що тільки для ProductEntity)
+* **Repository** — `using AspNetAssignments.Repository.<сутність>;`
 * **Services (Abstract)** — `using AspNetAssignments.Services.Abstract;`
 * **Services** — `using AspNetAssignments.Services;`
 * **Filters** — `using AspNetAssignments.Filters;`
@@ -77,26 +82,53 @@ builder.Services.AddControllers(options =>
 
 ---
 
-## 🌿 Робота з Git та гілками, як виконуєтсья кожна робота:
+## 🌿 Робота з Git та гілками, як виконується кожна робота:
 
-* Для кожного нового завдання (класної, практичної чи домашньої роботи) створюється окрема тематична гілка 
+* Для кожного нового завдання (класної, практичної чи домашньої роботи) створюється окрема тематична гілка:
   * `classwork-dd-mm-yyyy` 
   * `hw-dd-mm-yyyy`
   * `practice-dd-mm-yyyy` 
   
-(Де, dd, mm та yyy - день, місяць та рік(повна дата), коли робили або дали завдання):  
+(Де dd, mm та yyyy — день, місяць та рік, коли робили або видали завдання):  
 * Усі логічно завершені етапи фіксуються атомарними коммітами за конвенцією **Conventional Commits**:  
   `feat(<гілка_роботи>): implement ValidationFilterAttribute for automated FluentValidation`, `feat(<гілка_роботи>): add RequestLoggingMiddleware with Stopwatch timing`, `feat: register global action filter in Program.cs` тощо.
-* Замість `<гілка_роботи>` вставляється назва гілки, наприклад: `classwork-31-10-2026`, `hw-15-11-2026` тощо.
+* Замість `<гілка_роботи>` вставляється назва гілки, наприклад: `classwork-31-10-2026`, `hw-01-11-2026` тощо.
 * Після перевірки та тестування гілка зливається в основну гілку `main`.
  
 
 ---
 
 ## 🚀 Остання влита робота:
-### Класна робота 01.11.2026
-Остання актуальна робота, що була перевірена та влита в `main` (або не влита, та знаходиться в гілці hw-01-11-2026):
+### Домашня робота за 01.11.2026 (hw-01-11-2026)
+* **Поєднано UserManager та Shop в одну систему**:
+  * Об'єднано управління користувачами та магазином (товари, замовлення, позиції замовлень) під спільний `AppDbContext`.
+  * Встановлено повноцінні зв'язки між сутностями: `User` (1) <-> (N) `Order` (1) <-> (N) `OrderItem` (N) <-> (1) `Product`.
+  * Оновлено сервіси (`OrderService`, `UserService`), DTOs та мапінги AutoMapper.
+  * Додано отримання замовлень за `UserId` як у `OrderController`, так і у `UserController`.
+  * Налаштовано Dependency Injection та зареєстровано активні контролери в `Program.cs`.
+  * Додано декілька запитів в файлі [AspNetAssignments.http](AspNetAssignments/AspNetAssignments.http) (треба перевірити на коректність)
 ### Підтвердження виконання (Скріншоти та результати тестування) для практичної або домашньої роботи:
-## Почав використовувати Postman для тестування API, ось приклади запитів та результатів(тому що без нього були проблеми):
+Почав використовувати Postman для тестування API, ось приклади запитів та результатів(тому що без нього були проблеми):
+Спочатку попросив ШІ згенерувати колекцію(Postman Collection) для тестування API, який я імпортував у Postman. 
+
+---
 ![Немає](images/1.jpg)
+
+Просто перелік послідовних запитів до серверу, які перевіряють роботу контролерів та сервісів.
+
+---
 ![Немає](images/2.jpg)
+
+Перша частина, підтвердження роботи контролерів та сервісів, всі запити успішні, отримав очікувані результати.
+
+---
+![Немає](images/3.jpg)
+
+Друга частина, підтвердження роботи контролерів та сервісів, всі запити успішні, отримав очікувані результати. 
+
+---
+![Немає](images/4.jpg)
+
+Скріншот із SQL Server Object Explorer, де видно, наприклад, те що після всіх запитів бачимо, що є користувач та він був видалений(IsDeleted = true)
+
+---

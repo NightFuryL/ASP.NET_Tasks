@@ -47,6 +47,17 @@ public class OrderController : ControllerBase
     }
 
     /// <summary>
+    /// Отримує перелік усіх замовлень конкретного користувача
+    /// </summary>
+    [HttpGet("user/{userId:guid}")]
+    [ProducesResponseType(typeof(List<OrderDTO>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetByUserId(Guid userId)
+    {
+        var orders = await _orderService.GetOrdersByUserIdAsync(userId);
+        return Ok(orders);
+    }
+
+    /// <summary>
     /// Шукає замовлення за номером та мінімальною сумою
     /// </summary>
     [HttpGet("search")]
