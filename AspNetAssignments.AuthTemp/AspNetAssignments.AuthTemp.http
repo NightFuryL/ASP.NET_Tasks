@@ -1,0 +1,6 @@
+@AspNetAssignments.AuthTemp_HostAddress = http://localhost:5201
+
+GET {{AspNetAssignments.AuthTemp_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
