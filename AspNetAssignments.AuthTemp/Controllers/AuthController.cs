@@ -3,6 +3,7 @@ using AspNetAssignments.AuthTemp.Entity;
 using AspNetAssignments.AuthTemp.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+namespace AspNetAssignments.AuthTemp.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -18,7 +19,6 @@ public class AuthController : ControllerBase
         _roleManager = roleManager;
         _tokenService = tokenService;
     }
-
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] RegisterRequest request)
     {
