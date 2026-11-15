@@ -1,4 +1,5 @@
 <Solution>
+  <Project Path="AspNetAssignments.AuthTemp/AspNetAssignments.AuthTemp.csproj" Id="daec75c3-0a18-4c8a-a0e8-885e8ef141a1" />
   <Project Path="AspNetAssignments.Tests/AspNetAssignments.Tests.csproj" />
   <Project Path="AspNetAssignments/AspNetAssignments.csproj" Id="0398e7e6-16e1-4e62-b002-5d2f15b15312" />
 </Solution>
